@@ -56,7 +56,8 @@ public class Graph : MonoBehaviour {
             SineFunction,
             MultiSineFunction,
             SquareWaveFunction,
-            Sine2DFunction
+            Sine2DFunction, 
+            RippleFunction
         };
 
         GraphFunction f = functions[(int)function];
@@ -92,12 +93,12 @@ public class Graph : MonoBehaviour {
 
     static float SquareWaveFunction(float x, float z, float t)
     {
-        float y = Mathf.Sin(PI * (x + t));
-        int maxIterations = 15;
+        float y = Mathf.Sin((PI/2 )* (x + t));
+        int maxIterations = 35;
 
         for(int k = 2; k < maxIterations; k++)
         {
-            y += (Mathf.Sin(PI * ((2f * k) - 1f) * (x + t)) / ((2f * k) - 1f));
+            y += (Mathf.Sin((PI/2) * ((2f * k) - 1f) * (x + t)) / ((2f * k) - 1f));
         }
 
         return ((4f / PI) * y);
@@ -105,9 +106,20 @@ public class Graph : MonoBehaviour {
 
     static float Sine2DFunction(float x, float z, float t)
     {
-        float y = Mathf.Sin(PI * (x + t));
-        y += Mathf.Sin(PI * (z + t));
+        float _PI = PI;
+        float y = Mathf.Sin(_PI * (x + t));
+        y += Mathf.Sin(_PI * (z + t));
         y *= y * 0.5f;   
+        return y;
+    }
+
+    static float RippleFunction(float x, float z, float t)
+    {
+        float d = Mathf.Sqrt((x * x) + (z * z));
+        float y = Mathf.Sin(PI * (4f * d -t));
+
+        y /= 1f + 10F * d; 
+
         return y;
     }
 
